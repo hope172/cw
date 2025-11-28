@@ -6,51 +6,106 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1> Character Weather</h1>
-  <p>최애가 오늘의 날씨를 알려드려요.</p>
+  <main class="container">
+    <header>
+      <h1>Character Weather</h1>
+      <p>최애가 오늘의 날씨를 알려드려요 ☁️</p>
+    </header>
 
-  <!-- 1. 캐릭터 설정 -->
-  <section id="character-section">
-    <h2>1. 캐릭터 설정</h2>
-    <label>
-      캐릭터 이름
-      <input id="char-name" placeholder="예: 이동욱, 토모에, 코난" />
-    </label>
-    <br /><br />
-    <label>
-      캐릭터 이미지 선택
-      <input id="char-image" type="file" accept="image/*" />
-    </label>
+    <!-- 1. 캐릭터 설정 -->
+    <section id="character-section" class="card-box">
+      <h2>1. 캐릭터 설정</h2>
 
-    <div id="char-preview-wrapper">
-      <p>미리보기</p>
-      <div id="char-preview">👤</div>
-    </div>
-  </section>
+      <label class="field">
+        <span>캐릭터 이름</span>
+        <input id="char-name" placeholder="예: 이동욱, 토모에, 코난" />
+      </label>
 
-  <!-- 2. 날씨별 대사 입력 -->
-  <section id="message-section">
-    <h2>2. 상황에 맞게 최애의 대사를 적어주세요</h2>
+      <label class="field">
+        <span>캐릭터 이미지 선택</span>
+        <input id="char-image" type="file" accept="image/*" />
+      </label>
 
-    <label> 추울 때<textarea id="msg-cold" rows="2"></textarea></label>
-    <label> 선선할 때<textarea id="msg-cool" rows="2"></textarea></label>
-    <label> 따뜻할 때<textarea id="msg-warm" rows="2"></textarea></label>
-    <label> 더울 때<textarea id="msg-hot" rows="2"></textarea></label>
-    <label> 비 올 때<textarea id="msg-rain" rows="2"></textarea></label>
-  </section>
+      <div id="char-preview-wrapper">
+        <p>미리보기</p>
+        <div id="char-preview">👤</div>
+      </div>
+    </section>
 
-  <!-- 3. 도시 입력 -->
-  <section id="weather-section">
-    <h2>3. 오늘의 날씨 보기</h2>
-    <label>도시 이름(영어)<input id="city" placeholder="Seoul" /></label>
-    <button id="check-weather">오늘의 캐릭터 알림 보기</button>
-  </section>
+    <!-- 2. 날씨별 대사 입력 -->
+    <section id="message-section" class="card-box">
+      <h2>2. 상황에 맞게 최애의 대사를 적어주세요</h2>
 
-  <!-- 결과 -->
-  <section id="result-section">
-    <h2>📢 오늘의 캐릭터 알림</h2>
-    <div id="result">아직 알림이 없습니다.</div>
-  </section>
+      <label class="field">
+        <span>추울 때</span>
+        <textarea id="msg-cold" rows="2"
+          placeholder="예: 오늘 엄청 추워! 목도리 꼭 하고 나가~"></textarea>
+      </label>
+
+      <label class="field">
+        <span>선선할 때</span>
+        <textarea id="msg-cool" rows="2"
+          placeholder="예: 걷기 딱 좋은 날씨야 :)"></textarea>
+      </label>
+
+      <label class="field">
+        <span>따뜻할 때</span>
+        <textarea id="msg-warm" rows="2"
+          placeholder="예: 따뜻하니까 산책 어때?"></textarea>
+      </label>
+
+      <label class="field">
+        <span>더울 때</span>
+        <textarea id="msg-hot" rows="2"
+          placeholder="예: 너무 덥다.. 물 자주 마셔!"></textarea>
+      </label>
+
+      <label class="field">
+        <span>비 올 때</span>
+        <textarea id="msg-rain" rows="2"
+          placeholder="예: 오늘 비 온대! 우산 꼭 챙겨~"></textarea>
+      </label>
+    </section>
+
+    <!-- 3. 지역 선택 + 버튼 -->
+    <section id="weather-section" class="card-box">
+      <h2>3. 오늘 날씨 보기</h2>
+
+      <label class="field">
+        <span>지역 선택</span>
+        <select id="city">
+          <option value="">지역을 선택하세요</option>
+
+          <option value="Seoul">서울특별시</option>
+          <option value="Incheon">인천광역시</option>
+          <option value="Busan">부산광역시</option>
+          <option value="Daegu">대구광역시</option>
+          <option value="Gwangju">광주광역시</option>
+          <option value="Daejeon">대전광역시</option>
+          <option value="Ulsan">울산광역시</option>
+
+          <option value="Gyeonggi-do">경기도</option>
+          <option value="Gangwon-do">강원도</option>
+          <option value="Chungcheongbuk-do">충청북도</option>
+          <option value="Chungcheongnam-do">충청남도</option>
+          <option value="Jeollabuk-do">전라북도</option>
+          <option value="Jeollanam-do">전라남도</option>
+          <option value="Gyeongsangbuk-do">경상북도</option>
+          <option value="Gyeongsangnam-do">경상남도</option>
+
+          <option value="Jeju-do">제주특별자치도</option>
+        </select>
+      </label>
+
+      <button id="check-weather">오늘의 캐릭터 알림 보기</button>
+    </section>
+
+    <!-- 4. 결과 영역 -->
+    <section id="result-section" class="card-box">
+      <h2>📢 오늘의 캐릭터 알림</h2>
+      <div id="result" class="result-empty">아직 알림이 없습니다.</div>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>
