@@ -41,15 +41,30 @@ const REGION_COORDS = {
 // ===== Open-Meteo 호출 =====
 async function fetchWeather(lat, lon) {
   const url =
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=Asia%2FSeoul`;
+
+  console.log("[Open-Meteo 요청 URL]", url);
+
   const res = await fetch(url);
+
+  if (!res.ok) {
+    // 네트워크나 서버 에러
+    const text = await res.text();
+    console.error("Open-Meteo 응답 오류:", res.status, text);
+    throw new Error("Open-Meteo 응답 오류: " + res.status);
+  }
+
   const data = await res.json();
+  console.log("[Open-Meteo 응답 데이터]", data);
 
   if (!data.current_weather) {
-    throw new Error("current_weather 없음");
+    console.error("current_weather 필드가 없습니다.", data);
+    throw new Error("날씨 데이터에 current_weather가 없습니다.");
   }
+
   return data.current_weather; // {temperature, weathercode, ...}
 }
+
 
 // ===== 날씨 코드 → 한글 설명 =====
 function weatherCodeToKr(code) {
@@ -147,3 +162,4 @@ document.getElementById("check-weather").addEventListener("click", async () => {
     alert("날씨 정보를 불러오지 못했습니다.");
   }
 });
+
