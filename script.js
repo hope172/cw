@@ -16,7 +16,7 @@ charImageInput.addEventListener("change", (event) => {
   reader.readAsDataURL(file);
 });
 
-// ===== 한국 광역지역 → 위도/경도 매핑 (Open-Meteo용) =====
+// ===== 한국 광역지역 → 위도/경도 매핑 =====
 const REGION_COORDS = {
   "Seoul": { lat: 37.5665, lon: 126.9780 },
   "Incheon": { lat: 37.4563, lon: 126.7052 },
@@ -48,7 +48,6 @@ async function fetchWeather(lat, lon) {
   const res = await fetch(url);
 
   if (!res.ok) {
-    // 네트워크나 서버 에러
     const text = await res.text();
     console.error("Open-Meteo 응답 오류:", res.status, text);
     throw new Error("Open-Meteo 응답 오류: " + res.status);
@@ -64,7 +63,6 @@ async function fetchWeather(lat, lon) {
 
   return data.current_weather; // {temperature, weathercode, ...}
 }
-
 
 // ===== 날씨 코드 → 한글 설명 =====
 function weatherCodeToKr(code) {
@@ -101,7 +99,7 @@ function weatherCodeToKr(code) {
 // ===== 메인 버튼 클릭 =====
 document.getElementById("check-weather").addEventListener("click", async () => {
   const citySelect = document.getElementById("city");
-  const regionKey = citySelect.value; // ex) "Seoul"
+  const regionKey = citySelect.value;
   const regionNameKr = citySelect.options[citySelect.selectedIndex]?.textContent;
 
   if (!regionKey) {
@@ -112,7 +110,6 @@ document.getElementById("check-weather").addEventListener("click", async () => {
   const coords = REGION_COORDS[regionKey];
   const { lat, lon } = coords;
 
-  // 사용자가 적은 대사들
   const msgCold = document.getElementById("msg-cold").value.trim();
   const msgCool = document.getElementById("msg-cool").value.trim();
   const msgWarm = document.getElementById("msg-warm").value.trim();
@@ -122,44 +119,53 @@ document.getElementById("check-weather").addEventListener("click", async () => {
   const charName = (charNameInput.value || "캐릭터").trim();
   const charHtml = charPreview.innerHTML || "👤";
 
+  let temp, desc, code, isRain;
+
   try {
     const weather = await fetchWeather(lat, lon);
-    const temp = weather.temperature;
-    const code = weather.weathercode;
-    const desc = weatherCodeToKr(code);
+    temp = weather.temperature;
+    code = weather.weathercode;
+    desc = weatherCodeToKr(code);
 
     // 비 관련 코드 (이슬비/비/소나기)
-    const isRain =
-      (code >= 51 && code <= 67) || (code >= 80 && code <= 82);
+    isRain = (code >= 51 && code <= 67) || (code >= 80 && code <= 82);
+  } catch (err) {
+    console.error("실제 날씨 호출 실패:", err);
 
-    let selectedMessage = "";
-    if (isRain && msgRain) selectedMessage = msgRain;
-    else if (temp < 5 && msgCold) selectedMessage = msgCold;
-    else if (temp < 15 && msgCool) selectedMessage = msgCool;
-    else if (temp < 23 && msgWarm) selectedMessage = msgWarm;
-    else selectedMessage = msgHot || "오늘 날씨도 우리 잘 버텨보자!";
+    // 🔸 여기가 핵심: 실패해도 카드가 뜨게 하기 위한 '임시 데이터'
+    temp = 20;               // 임의의 온도
+    desc = "날씨 정보 불러오기 실패(네트워크 또는 환경 문제)";
+    isRain = false;
+    
+    alert("날씨 정보를 불러오지 못했습니다.\n\n" +
+          "원인: " + err.message + "\n" +
+          "그래도 캐릭터 알림 카드는 임시 데이터로 보여줄게요.");
+  }
 
-    // 결과 카드 렌더링
-    result.classList.remove("result-empty");
-    result.innerHTML = `
-      <div class="card">
-        <div class="card-inner">
-          <div class="char-face">
-            ${charHtml}
-          </div>
-          <div class="bubble">
-            <div class="bubble-name">${charName}의 한마디</div>
-            <div class="bubble-text">${selectedMessage}</div>
-            <div class="caption">
-              현재 ${regionNameKr} 기온은 ${temp}°C, 날씨: ${desc}
-            </div>
+  // 여기부터는 성공/실패 상관없이 공통으로 카드 생성
+  let selectedMessage = "";
+  if (isRain && msgRain) selectedMessage = msgRain;
+  else if (temp < 5 && msgCold) selectedMessage = msgCold;
+  else if (temp < 15 && msgCool) selectedMessage = msgCool;
+  else if (temp < 23 && msgWarm) selectedMessage = msgWarm;
+  else selectedMessage = msgHot || "오늘도 우리 잘 버텨보자!";
+
+  result.classList.remove("result-empty");
+  result.innerHTML = `
+    <div class="card">
+      <div class="card-inner">
+        <div class="char-face">
+          ${charHtml}
+        </div>
+        <div class="bubble">
+          <div class="bubble-name">${charName}의 한마디</div>
+          <div class="bubble-text">${selectedMessage}</div>
+          <div class="caption">
+            현재 ${regionNameKr} 기준 기온은 대략 ${temp}°C (실제 값이 아닐 수 있습니다)<br>
+            날씨: ${desc}
           </div>
         </div>
       </div>
-    `;
-  } catch (err) {
-    console.error(err);
-    alert("날씨 정보를 불러오지 못했습니다.");
-  }
+    </div>
+  `;
 });
-
