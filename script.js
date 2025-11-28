@@ -1,3 +1,5 @@
+alert("DEBUG: 새 script.js가 로드되었습니다.");
+
 // ===== 공통 DOM =====
 const charNameInput = document.getElementById("char-name");
 const charImageInput = document.getElementById("char-image");
@@ -169,3 +171,4 @@ document.getElementById("check-weather").addEventListener("click", async () => {
     </div>
   `;
 });
+
