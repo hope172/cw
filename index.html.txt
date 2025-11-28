@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Character Weather</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>🌤️ Character Weather</h1>
+  <p>최애가 오늘 날씨를 알려드려요.</p>
+
+  <!-- 1. 캐릭터 설정 -->
+  <section id="character-section">
+    <h2>1. 캐릭터 설정</h2>
+    <label>
+      캐릭터 이름
+      <input id="char-name" placeholder="예: 이동욱, 토모에, 코난" />
+    </label>
+    <br /><br />
+    <label>
+      캐릭터 이미지 선택
+      <input id="char-image" type="file" accept="image/*" />
+    </label>
+
+    <div id="char-preview-wrapper">
+      <p>미리보기</p>
+      <div id="char-preview">👤</div>
+    </div>
+  </section>
+
+  <!-- 2. 날씨별 대사 입력 -->
+  <section id="message-section">
+    <h2>2. 상황에 맞게 최애의 대사를 적어주세요</h2>
+
+    <label>❄️ 추울 때<textarea id="msg-cold" rows="2"></textarea></label>
+    <label>🍂 선선할 때<textarea id="msg-cool" rows="2"></textarea></label>
+    <label>🌼 따뜻할 때<textarea id="msg-warm" rows="2"></textarea></label>
+    <label>🔥 더울 때<textarea id="msg-hot" rows="2"></textarea></label>
+    <label>☔ 비 올 때<textarea id="msg-rain" rows="2"></textarea></label>
+  </section>
+
+  <!-- 3. 도시 입력 -->
+  <section id="weather-section">
+    <h2>3. 오늘 날씨 보기</h2>
+    <label>도시 이름(영어)<input id="city" placeholder="Seoul" /></label>
+    <button id="check-weather">오늘의 캐릭터 알림 보기</button>
+  </section>
+
+  <!-- 결과 -->
+  <section id="result-section">
+    <h2>📢 오늘의 캐릭터 알림</h2>
+    <div id="result">아직 알림이 없습니다.</div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

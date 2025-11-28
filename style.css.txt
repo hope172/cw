@@ -1,0 +1,55 @@
+body {
+  font-family: "맑은 고딕", sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f5f7fb;
+}
+h1 { text-align: center; }
+section {
+  background: #fff;
+  padding: 16px 20px;
+  margin: 16px 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+label { display: block; margin-bottom: 12px; }
+textarea, input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #d0d4e4;
+  margin-top: 4px;
+}
+#check-weather {
+  margin-top: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #4f46e5;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+#char-preview {
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  border: 2px dashed #cbd5f5;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px; background: #f9f9ff; overflow: hidden;
+}
+#char-preview img { width: 100%; height: 100%; object-fit: cover; }
+.card { display: flex; gap: 16px; margin-top: 12px; }
+.bubble {
+  background: #eef2ff;
+  padding: 14px 16px;
+  border-radius: 16px;
+  position: relative;
+}
+.bubble::before {
+  content: ""; position: absolute; left: -10px; top: 20px;
+  border-width: 10px; border-style: solid;
+  border-color: transparent #eef2ff transparent transparent;
+}
+.caption {
+  margin-top: 8px; font-size: 12px; color: #555;
+}
